@@ -32,4 +32,4 @@ yarn build or npm run build
 
 #### 2019-7-16
 - 初始化dva项目
-    - 安装antd依赖
+    - 安装antd依赖，配置按需加载antd、热更新
