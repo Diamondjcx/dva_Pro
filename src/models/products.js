@@ -1,41 +1,34 @@
+import { fetchProduct } from '../services/product';
 export default {
-	namespace: 'products',
-	state: [],
+	namespace: 'product',
+	state: {
+		products: [],
+	},
 	reducers: {
 		'delete'(state, { payload: id }) {
 			return state.filter(item => item.id !== id);
 		},
+		'getData'(state, action){
+			const { products } = action.data.data
+			return {
+				...state,
+				products: products
+			}
+		},
 	},
+	effects: {
+		*fetch(action, { put, call }){
+			const products = yield call(fetchProduct);
+			yield put({ type: 'getData', data: products });
+		}
+	},
+	// subscriptions: {
+	// 	setup({ dispatch, history}) {
+	// 		return history.listen(({ pathname }) => {
+	// 			if (pathname === "/products") {
+	// 				dispatch({ type: 'fetch' });
+	// 			}
+	// 		});
+	// 	}
+	// }
 };
-
-// import { fetchUsers } from '../services/user';
-
-// export default {
-// 	namespace: 'user',
-// 	state: {
-// 		list: [],
-// 	},
-// 	reducers: {
-// 		save(state, action) {
-// 			return {
-// 				...state,
-// 				list: action.data,
-// 			};
-// 		},
-// 	},
-// 	effects: {
-// 		* fetch(action, { put, call }) {
-// 			const users = yield put(fetchUsers, action.data);
-// 			yield put({ type: 'save', data: users });
-// 		},
-// 	},
-// 	subscriptions: {
-// 		setup({ dispatch, history }) {
-// 			return history.listen(({ pathname }) => {
-// 				if (pathname === '/user') {
-// 					dispatch({ type: 'fetch' });
-// 				}
-// 			});
-// 		},
-// 	},
-// }
